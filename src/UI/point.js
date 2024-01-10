@@ -8,6 +8,7 @@ import {
 } from './utils';
 
 let _enabled = false;
+let _pointColor = '#fff9c7';
 let input;
 
 /**
@@ -20,6 +21,7 @@ function handleDocumentMouseup(e) {
     return
   }
   
+  /*
   input = document.createElement('input');
   input.setAttribute('id', 'pdf-annotate-point-input');
   input.setAttribute('placeholder', 'Enter comment');
@@ -28,9 +30,30 @@ function handleDocumentMouseup(e) {
   input.style.position = 'absolute';
   input.style.top = `${e.clientY}px`;
   input.style.left = `${e.clientX}px`;
+  */
+
+  //20210209
+  input = document.createElement('textarea');
+  input.setAttribute('id', 'pdf-annotate-point-input');
+  input.setAttribute('placeholder', '付箋を入力してください');  
+  input.style.border = `3px solid ${BORDER_COLOR}`;
+  input.style.borderRadius = '3px';
+  input.style.position = 'absolute';
+  input.style.top = e.clientY + 'px';
+  input.style.left = e.clientX + 'px';
+  input.style.zIndex = '9999';
+  input.style.background = _pointColor;
+  input.style.width = '275px';
+  input.rows = 5;
+
+  if ($("#ShowUserNameInComment").val() === "1") {
+    input.value = $("#UserName").val() + ": \r\n";
+  }
 
   input.addEventListener('blur', handleInputBlur);
-  input.addEventListener('keyup', handleInputKeyup);
+  //20210209
+  //input.addEventListener('keyup', handleInputKeyup);
+
 
   document.body.appendChild(input);
   input.focus();
@@ -72,7 +95,9 @@ function savePoint() {
     let rect = svg.getBoundingClientRect();
     let { documentId, pageNumber } = getMetadata(svg);
     let annotation = Object.assign({
-        type: 'point'
+        type: 'point',
+        content: content,
+        color: _pointColor
       }, scaleDown(svg, {
         x: clientX - rect.left,
         y: clientY - rect.top
@@ -103,6 +128,16 @@ function closeInput() {
   document.body.removeChild(input);
   input = null;
 }
+
+	/**
+	 * Set the attributes of the point.
+	 *	 
+	 * @param {String} pointColor the background color 
+	 */
+   export function setPoint() {
+		_pointColor = arguments.length <= 0 || arguments[0] === undefined ? '#fff9c7' : arguments[0];
+	}
+	
 
 /**
  * Enable point annotation behavior

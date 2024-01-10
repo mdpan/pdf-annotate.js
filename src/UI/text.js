@@ -24,15 +24,16 @@ function handleDocumentMouseup(e) {
 
   input = document.createElement('input');
   input.setAttribute('id', 'pdf-annotate-text-input');
-  input.setAttribute('placeholder', 'Enter text');
+  input.setAttribute('placeholder', 'テキストを入力してください');
   input.style.border = `3px solid ${BORDER_COLOR}`;
   input.style.borderRadius = '3px';
   input.style.position = 'absolute';
   input.style.top = `${e.clientY}px`;
   input.style.left = `${e.clientX}px`;
   input.style.fontSize = `${_textSize}px`;
-
-  input.addEventListener('blur', handleInputBlur);
+  input.style.zIndex = '9999';
+ 
+  input.addEventListener('blur', handleInputBlur);  
   input.addEventListener('keyup', handleInputKeyup);
 
   document.body.appendChild(input);

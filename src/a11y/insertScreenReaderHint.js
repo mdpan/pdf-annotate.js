@@ -43,6 +43,8 @@ export default function insertScreenReaderHint(annotation, num = 0) {
 
     case 'drawing':
     case 'area':
+    case 'sign':
+    case 'signimg':      
       let x = typeof annotation.x !== 'undefined' ? annotation.x : annotation.lines[0][0];
       let y = typeof annotation.y !== 'undefined' ? annotation.y : annotation.lines[0][1];
 
